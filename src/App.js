@@ -153,8 +153,9 @@ function App() {
         My name is Thitirat Rattanapan, you can call me Chompoo.<br />
         I am a 4th-year Software Engineering student at Thammasat University.<br />
         <span className="pt-5 mt-5 block">
-          Passionate about technology and eager to apply my skills in real-world projects,<br />
-          I am dedicated to continuous learning and making a meaningful impact in the tech industry.
+          Passionate about both the design and development of digital products and data science.<br />
+          Eager to expand my skill set and embrace new technologies,<br />
+          I am committed to continuous learning and professional growth.
         </span>
       </p>
 
@@ -242,11 +243,26 @@ function App() {
 
       {/* Contact */}
       <h1 className="title text-center text-3xl pt-10 mt-10 pb-5">CONTACT ME</h1>
-      <p className="text-center text-base font-light leading-loose pb-10 mb-10">
-        chompoo99075@gmail.com<br />
-        098-072-9984<br />
-        <a href="https://www.linkedin.com/in/thitirat-rattanapan-b757422a1/" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
+      <div className='flex justify-center flex-wrap gap-4 mb-10'>
+        <a href="mailto:chompoo99075@gmail.com" aria-label="Email">
+          <img src='../contact/mail.png' alt='mail' className='w-[50px]'/>
+        </a>
+        <a href="https://www.linkedin.com/in/thitirat-rattanapan-b757422a1/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+          <img src='../contact/linkedin.png' alt='linkedin' className='w-[50px]'/>
+        </a>
+        <a href="https://github.com/cchompoottr" aria-label="gitHub" target="_blank" rel="noopener noreferrer">
+          <img src='../contact/github.png' alt='github' className='w-[60px] -mt-1'/>
+        </a>
+      </div>
+      <p className="text-center text-lg font-medium leading-loose mb-2">
+        <a href="#top" className="text-black hover:text-slate-500">
+          [Back to Top]
+        </a>
       </p>
+      <p className="text-center text-sm font-light leading-loose pb-10 mb-10">
+        cchompoo@aug2024
+      </p>
+
     </div>
   );
 }
