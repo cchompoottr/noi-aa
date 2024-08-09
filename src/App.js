@@ -1,6 +1,58 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import gsap from 'gsap';
+import { TextPlugin } from 'gsap/TextPlugin';
+
+gsap.registerPlugin(TextPlugin);
 
 function App() {
+  useEffect(() => {
+    const target = "#scramble";
+    const tl = gsap.timeline({ defaults: { duration: 0.5, ease: "power1.out" } });
+
+    // กำหนดการอนิเมตต์
+    const animateText = () => {
+      tl.fromTo(target, 
+        {
+          text: { value: "" }
+        }, 
+        {
+          text: { 
+            value: "Hello,<br>I am a Software Engineering Student", 
+            delimiter: "", 
+            newClass: "highlight"
+          },
+          stagger: 0.1,
+          onComplete: () => {
+            // ตั้งค่าการหน่วงเวลาเพื่อเริ่มข้อความใหม่
+            setTimeout(() => {
+              tl.restart(); // เริ่มการอนิเมตต์ใหม่
+            }, 2000); // ตั้งเวลาหน่วงเป็น 2 วินาที (2000 มิลลิวินาที)
+          }
+        }
+      );
+    };
+
+    // เริ่มการอนิเมตต์
+    animateText();
+
+    // รีเซ็ตการอนิเมตต์เมื่อเมาส์มาที่องค์ประกอบ
+    const element = document.querySelector(target);
+    if (element) {
+      element.addEventListener('mouseover', () => {
+        tl.restart(); // เริ่มการอนิเมตต์ใหม่
+      });
+    }
+
+    // Cleanup
+    return () => {
+      if (element) {
+        element.removeEventListener('mouseover', () => {
+          tl.restart();
+        });
+      }
+    };
+  }, []);
+
   return (
     <div className="body w-full">
       {/* Bar */}
@@ -14,7 +66,7 @@ function App() {
       </div>
 
       {/* Title */}
-      <h1 className="text-center font-light text-2xl -pt-10 -mt-10">
+      <h1 id="scramble" className="text-center font-light text-2xl -pt-10 -mt-10">
         <span className="font-medium">Hello,</span><br />
         I am a Software Engineering Student
       </h1>

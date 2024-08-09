@@ -10,6 +10,10 @@ body {
   font-family: "Epilogue", sans-serif;
 }
 
+.highlight {
+  font-weight: 400; 
+}
+
 .title {
   font-family: "Schoolbell", cursive;
 }
