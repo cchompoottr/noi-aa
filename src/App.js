@@ -1,15 +1,93 @@
 import React, { useEffect } from 'react';
 import gsap from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
+import { motion } from "framer-motion";
+import move from "lodash-move";
 
 gsap.registerPlugin(TextPlugin);
+
+const CARD_IMAGES = [
+  "/pic/1.png",
+  "/pic/2.png",
+  "/pic/3.png"
+];
+const CARD_OFFSET = 10;
+const SCALE_FACTOR = 0.06;
+
+const CardStack = () => {
+  const [cards, setCards] = React.useState(CARD_IMAGES);
+
+  const moveToEnd = from => {
+    setCards(move(cards, from, cards.length - 1));
+  };
+
+  return (
+    <div style={wrapperStyle}>
+      <ul style={cardWrapStyle}>
+        {cards.map((image, index) => {
+          const canDrag = index === 0;
+
+          return (
+            <motion.li
+              key={image}
+              style={{
+                ...cardStyle,
+                backgroundImage: `url(${image})`,
+                cursor: canDrag ? "grab" : "auto",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
+              animate={{
+                top: index * -CARD_OFFSET,
+                scale: 1 - index * SCALE_FACTOR,
+                zIndex: CARD_IMAGES.length - index
+              }}
+              drag={canDrag ? "y" : false}
+              dragConstraints={{
+                top: 0,
+                bottom: 0
+              }}
+              onDragEnd={() => moveToEnd(index)}
+            />
+          );
+        })}
+      </ul>
+    </div>
+  );
+};
+
+const wrapperStyle = {
+  position: "relative",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  height: "70vh"
+};
+
+const cardWrapStyle = {
+  position: "relative",
+  width: "350px",
+  height: "350px",
+
+};
+
+const cardStyle = {
+  position: "absolute",
+  width: "350px",
+  height: "350px",
+  borderRadius: "50px",
+  transformOrigin: "top center",
+  listStyle: "none",
+  backgroundColor: "transparent", // Ensure backgroundColor does not override the image
+  boxShadow: "rgba(0, 0, 0, 0.18) 0px 2px 4px"
+};
 
 function App() {
   useEffect(() => {
     const target = "#scramble";
     const tl = gsap.timeline({ defaults: { duration: 0.5, ease: "power1.out" } });
 
-    // กำหนดการอนิเมตต์
+    // Animation setup
     const animateText = () => {
       tl.fromTo(target, 
         {
@@ -23,23 +101,23 @@ function App() {
           },
           stagger: 0.1,
           onComplete: () => {
-            // ตั้งค่าการหน่วงเวลาเพื่อเริ่มข้อความใหม่
+            // Set timeout to restart animation
             setTimeout(() => {
-              tl.restart(); // เริ่มการอนิเมตต์ใหม่
-            }, 2000); // ตั้งเวลาหน่วงเป็น 2 วินาที (2000 มิลลิวินาที)
+              tl.restart(); // Restart the animation
+            }, 2000); // Delay of 2 seconds (2000 milliseconds)
           }
         }
       );
     };
 
-    // เริ่มการอนิเมตต์
+    // Start the animation
     animateText();
 
-    // รีเซ็ตการอนิเมตต์เมื่อเมาส์มาที่องค์ประกอบ
+    // Reset animation on mouseover
     const element = document.querySelector(target);
     if (element) {
       element.addEventListener('mouseover', () => {
-        tl.restart(); // เริ่มการอนิเมตต์ใหม่
+        tl.restart(); // Restart the animation
       });
     }
 
@@ -60,13 +138,11 @@ function App() {
         <h1 className="text-2xl">cchompoo</h1>
       </div>
 
-      {/* Pic */}
-      <div className="flex justify-center -pt-20 -mt-10">
-        <img src="/hunter.png" alt="pic" className="py-20 w-auto h-[500px] rounded-lg"/>
-      </div>
+      {/* Card Stack */}
+      <CardStack />
 
       {/* Title */}
-      <h1 id="scramble" className="text-center font-light text-2xl -pt-10 -mt-10">
+      <h1 id="scramble" className="text-center font-light text-3xl -pt-10 -mt-10 pb-20 mb-20">
         <span className="font-medium">Hello,</span><br />
         I am a Software Engineering Student
       </h1>
@@ -86,19 +162,19 @@ function App() {
       <div className="flex justify-center flex-wrap mt-10">
         {/* 1 */}
         <div className="max-w-sm rounded overflow-hidden mt-10 p-5">
-        <div style={{
-            position: 'relative',
-            width: '325px',
-            height: '0',
-            paddingTop: '56.2500%',
-            paddingBottom: '0',
-            boxShadow: '0 2px 8px 0 rgba(63,69,81,0.16)',
-            marginTop: '1.6em',
-            marginBottom: '0.9em',
-            overflow: 'hidden',
-            borderRadius: '8px',
-            willChange: 'transform'
-          }}>
+          <div style={{
+              position: 'relative',
+              width: '325px',
+              height: '0',
+              paddingTop: '56.2500%',
+              paddingBottom: '0',
+              boxShadow: '0 2px 8px 0 rgba(63,69,81,0.16)',
+              marginTop: '1.6em',
+              marginBottom: '0.9em',
+              overflow: 'hidden',
+              borderRadius: '8px',
+              willChange: 'transform'
+            }}>
             <iframe
               loading="lazy"
               style={{
@@ -126,19 +202,19 @@ function App() {
 
         {/* 2 */}
         <div className="max-w-sm rounded overflow-hidden mt-10 p-5">
-        <div style={{
-            position: 'relative',
-            width: '325px',
-            height: '0',
-            paddingTop: '56.2500%',
-            paddingBottom: '0',
-            boxShadow: '0 2px 8px 0 rgba(63,69,81,0.16)',
-            marginTop: '1.6em',
-            marginBottom: '0.9em',
-            overflow: 'hidden',
-            borderRadius: '8px',
-            willChange: 'transform'
-          }}>
+          <div style={{
+              position: 'relative',
+              width: '325px',
+              height: '0',
+              paddingTop: '56.2500%',
+              paddingBottom: '0',
+              boxShadow: '0 2px 8px 0 rgba(63,69,81,0.16)',
+              marginTop: '1.6em',
+              marginBottom: '0.9em',
+              overflow: 'hidden',
+              borderRadius: '8px',
+              willChange: 'transform'
+            }}>
             <iframe
               loading="lazy"
               style={{
